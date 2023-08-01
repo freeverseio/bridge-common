@@ -23,6 +23,8 @@ hex = "0.4"
 finality-grandpa = { version = "0.16.2", default-features = false }
 frame-support = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 frame-system = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
+pallet-balances = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
+sp-arithmetic = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
 sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-io = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
@@ -35,3 +37,9 @@ frame-benchmarking = { git = "https://github.com/paritytech/substrate", branch =
 
 bp-runtime = { path = "./primitives/runtime", default-features = false }
 bp-header-chain = { path = "./primitives/header-chain", default-features = false }
+bp-messages = { path = "./primitives/messages", default-features = false }
+bp-relayers = { path = "./primitives/relayers", default-features = false }
+
+pallet-bridge-grandpa = { path = "./pallets/grandpa", default-features = false }
+pallet-bridge-messages = { path = "./pallets/messages", default-features = false }
+pallet-bridge-relayers = { path = "./pallets/relayers", default-features = false }

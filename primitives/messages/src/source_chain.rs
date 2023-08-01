@@ -1,0 +1,139 @@
+// Copyright 2019-2021 Parity Technologies (UK) Ltd.
+// This file is part of Parity Bridges Common.
+
+// Parity Bridges Common is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// Parity Bridges Common is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with Parity Bridges Common.  If not, see <http://www.gnu.org/licenses/>.
+
+//! Primitives of messages module, that are used on the source chain.
+
+use crate::{LaneId, MessageNonce, UnrewardedRelayer};
+
+use bp_runtime::{Size, UnverifiedStorageProof};
+use parity_scale_codec::{Decode, Encode};
+use frame_support::RuntimeDebug;
+use scale_info::TypeInfo;
+use sp_std::{
+	collections::{btree_map::BTreeMap, vec_deque::VecDeque},
+	fmt::Debug,
+	ops::RangeInclusive,
+};
+
+/// Messages delivery proof from the bridged chain.
+///
+/// It contains everything required to prove that our (this chain) messages have been
+/// delivered to the bridged (target) chain:
+///
+/// - hash of finalized header;
+///
+/// - storage proof of the inbound lane state;
+///
+/// - lane id.
+#[derive(Clone, Decode, Encode, Eq, PartialEq, RuntimeDebug, TypeInfo)]
+pub struct FromBridgedChainMessagesDeliveryProof<BridgedHeaderHash> {
+	/// Hash of the bridge header the proof is for.
+	pub bridged_header_hash: BridgedHeaderHash,
+	/// Storage trie proof generated for [`Self::bridged_header_hash`].
+	pub storage_proof: UnverifiedStorageProof,
+	/// Lane id of which messages were delivered and the proof is for.
+	pub lane: LaneId,
+}
+
+impl<BridgedHeaderHash> Size for FromBridgedChainMessagesDeliveryProof<BridgedHeaderHash> {
+	fn size(&self) -> u32 {
+		self.storage_proof.size()
+	}
+}
+
+/// Number of messages, delivered by relayers.
+pub type RelayersRewards<AccountId> = BTreeMap<AccountId, MessageNonce>;
+
+/// Manages payments that are happening at the source chain during delivery confirmation
+/// transaction.
+pub trait DeliveryConfirmationPayments<AccountId> {
+	/// Error type.
+	type Error: Debug + Into<&'static str>;
+
+	/// Pay rewards for delivering messages to the given relayers.
+	///
+	/// The implementation may also choose to pay reward to the `confirmation_relayer`, which is
+	/// a relayer that has submitted delivery confirmation transaction.
+	///
+	/// Returns number of actually rewarded relayers.
+	fn pay_reward(
+		lane_id: LaneId,
+		messages_relayers: VecDeque<UnrewardedRelayer<AccountId>>,
+		confirmation_relayer: &AccountId,
+		received_range: &RangeInclusive<MessageNonce>,
+	) -> MessageNonce;
+}
+
+impl<AccountId> DeliveryConfirmationPayments<AccountId> for () {
+	type Error = &'static str;
+
+	fn pay_reward(
+		_lane_id: LaneId,
+		_messages_relayers: VecDeque<UnrewardedRelayer<AccountId>>,
+		_confirmation_relayer: &AccountId,
+		_received_range: &RangeInclusive<MessageNonce>,
+	) -> MessageNonce {
+		// this implementation is not rewarding relayers at all
+		0
+	}
+}
+
+/// Send message artifacts.
+#[derive(Eq, RuntimeDebug, PartialEq)]
+pub struct SendMessageArtifacts {
+	/// Nonce of the message.
+	pub nonce: MessageNonce,
+}
+
+/// Messages bridge API to be used from other pallets.
+pub trait MessagesBridge<Payload> {
+	/// Error type.
+	type Error: Debug;
+
+	/// Send message over the bridge.
+	///
+	/// Returns unique message nonce or error if send has failed.
+	fn send_message(lane: LaneId, message: Payload) -> Result<SendMessageArtifacts, Self::Error>;
+}
+
+/// Bridge that does nothing when message is being sent.
+#[derive(Eq, RuntimeDebug, PartialEq)]
+pub struct NoopMessagesBridge;
+
+impl<Payload> MessagesBridge<Payload> for NoopMessagesBridge {
+	type Error = &'static str;
+
+	fn send_message(_lane: LaneId, _message: Payload) -> Result<SendMessageArtifacts, Self::Error> {
+		Ok(SendMessageArtifacts { nonce: 0 })
+	}
+}
+
+/// Structure that may be used in place `MessageDeliveryAndDispatchPayment` on chains,
+/// where outbound messages are forbidden.
+pub struct ForbidOutboundMessages;
+
+impl<AccountId> DeliveryConfirmationPayments<AccountId> for ForbidOutboundMessages {
+	type Error = &'static str;
+
+	fn pay_reward(
+		_lane_id: LaneId,
+		_messages_relayers: VecDeque<UnrewardedRelayer<AccountId>>,
+		_confirmation_relayer: &AccountId,
+		_received_range: &RangeInclusive<MessageNonce>,
+	) -> MessageNonce {
+		0
+	}
+}

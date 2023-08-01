@@ -1,0 +1,65 @@
+[package]
+name = "pallet-bridge-messages"
+description = "Module that allows bridged chains to exchange messages using lane concept."
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2021"
+license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
+
+[dependencies]
+parity-scale-codec = { workspace = true }
+num-traits = { workspace = true }
+scale-info = { workspace = true }
+
+# Bridge dependencies
+
+bp-header-chain = { workspace = true }
+bp-messages = { workspace = true }
+bp-runtime = { workspace = true }
+
+# Substrate Dependencies
+
+frame-benchmarking = { workspace = true, optional = true }
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+sp-core = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+sp-trie = { workspace = true, optional = true }
+
+[dev-dependencies]
+bp-runtime = { workspace = true, features = ["test-helpers"] }
+pallet-balances = { workspace = true }
+pallet-bridge-grandpa = { workspace = true }
+sp-io = { workspace = true }
+sp-trie = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"bp-header-chain/std",
+	"bp-messages/std",
+	"bp-runtime/std",
+	"parity-scale-codec/std",
+	"frame-support/std",
+	"frame-system/std",
+	"frame-benchmarking/std",
+	"num-traits/std",
+	"scale-info/std",
+	"sp-core/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"sp-trie/std"
+]
+runtime-benchmarks = [
+	"bp-runtime/test-helpers",
+	"frame-benchmarking/runtime-benchmarks",
+]
+try-runtime = [
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+]
+test-helpers = [
+	"sp-trie",
+	"bp-runtime/test-helpers"
+]

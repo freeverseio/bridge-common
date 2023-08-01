@@ -1,0 +1,34 @@
+[package]
+name = "bp-relayers"
+description = "Primitives of relayers module."
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2021"
+license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
+
+[dependencies]
+parity-scale-codec = { workspace = true, features = ["derive", "bit-vec"] }
+scale-info = { workspace = true, features = ["bit-vec", "derive"] }
+
+# Bridge Dependencies
+
+bp-messages = { workspace = true }
+bp-runtime = { workspace = true }
+
+# Substrate Dependencies
+
+frame-support = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"bp-messages/std",
+	"bp-runtime/std",
+	"frame-support/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"parity-scale-codec/std",
+	"scale-info/std",
+]
