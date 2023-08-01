@@ -1,0 +1,40 @@
+[package]
+name = "bp-header-chain"
+description = "A common interface for describing what a bridge pallet should be able to do."
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2021"
+license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
+
+[dependencies]
+parity-scale-codec = { workspace = true }
+finality-grandpa = { workspace = true }
+scale-info = { workspace = true }
+serde = { workspace = true }
+
+# Bridge dependencies
+
+bp-runtime = { workspace = true }
+
+# Substrate Dependencies
+
+frame-support = { workspace = true }
+sp-core = { workspace = true, features = ["serde"] }
+sp-consensus-grandpa = { workspace = true, features = ["serde"] }
+sp-runtime = { workspace = true, features = ["serde"] }
+sp-std = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"bp-runtime/std",
+	"parity-scale-codec/std",
+	"finality-grandpa/std",
+	"frame-support/std",
+	"scale-info/std",
+	"serde/std",
+	"sp-core/std",
+	"sp-consensus-grandpa/std",
+	"sp-runtime/std",
+	"sp-std/std",
+]
