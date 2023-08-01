@@ -1,25 +1,32 @@
 [package]
-name = "bp-relayers"
-description = "Primitives of relayers module."
+name = "bp-polkadot-core"
+description = "Primitives of Polkadot-like runtime."
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2021"
 license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 
 [dependencies]
-parity-scale-codec = { workspace = true, features = ["derive", "bit-vec"] }
-scale-info = { workspace = true, features = ["bit-vec", "derive"] }
+parity-scale-codec = { workspace = true }
+parity-util-mem = { workspace = true, optional = true }
+scale-info = { workspace = true }
+serde = { workspace = true, optional = true }
 
 # Bridge Dependencies
 
 bp-messages = { workspace = true }
 bp-runtime = { workspace = true }
 
-# Substrate Dependencies
+# Substrate Based Dependencies
 
 frame-support = { workspace = true, default-features = false }
+frame-system = { workspace = true, default-features = false }
+sp-core = { workspace = true, default-features = false }
 sp-runtime = { workspace = true, default-features = false }
 sp-std = { workspace = true, default-features = false }
+
+[dev-dependencies]
+hex = { workspace = true }
 
 [features]
 default = ["std"]
@@ -27,8 +34,12 @@ std = [
 	"bp-messages/std",
 	"bp-runtime/std",
 	"frame-support/std",
+	"frame-system/std",
+	"parity-scale-codec/std",
+	"parity-util-mem",
+	"scale-info/std",
+	"serde",
+	"sp-core/std",
 	"sp-runtime/std",
 	"sp-std/std",
-	"parity-scale-codec/std",
-	"scale-info/std",
 ]

@@ -10,21 +10,21 @@ license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 parity-scale-codec = { workspace = true }
 hash-db = { workspace = true }
 impl-trait-for-tuples = { workspace = true }
-num-traits = { workspace = true }
+num-traits = { workspace = true, default-features = false }
 scale-info = { workspace = true }
 serde = { workspace = true }
 
 # Substrate Dependencies
 
-frame-support = { workspace = true }
-frame-system = { workspace = true }
-sp-core = { workspace = true }
-sp-io = { workspace = true }
-sp-runtime = { workspace = true, features = ["serde"] }
-sp-state-machine = { workspace = true }
-sp-std = { workspace = true }
-sp-trie = { workspace = true }
-trie-db = { version = "0.27.1", default-features = false }
+frame-support = { workspace = true, default-features = false }
+frame-system = { workspace = true, default-features = false }
+sp-core = { workspace = true, default-features = false }
+sp-io = { workspace = true, default-features = false }
+sp-runtime = { workspace = true, default-features = false, features = ["serde"] }
+sp-state-machine = { workspace = true, default-features = false }
+sp-std = { workspace = true, default-features = false }
+sp-trie = { workspace = true, default-features = false }
+trie-db = { workspace = true }
 
 [features]
 default = ["std"]

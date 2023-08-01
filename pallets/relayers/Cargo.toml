@@ -20,11 +20,11 @@ pallet-bridge-messages = { workspace = true }
 # Substrate Dependencies
 
 frame-benchmarking = { workspace = true, optional = true }
-frame-support = { workspace = true }
-frame-system = { workspace = true }
+frame-support = { workspace = true, default-features = false }
+frame-system = { workspace = true, default-features = false }
 sp-arithmetic = { workspace = true }
-sp-runtime = { workspace = true }
-sp-std = { workspace = true }
+sp-runtime = { workspace = true, default-features = false }
+sp-std = { workspace = true, default-features = false }
 
 [dev-dependencies]
 bp-runtime = { workspace = true }
