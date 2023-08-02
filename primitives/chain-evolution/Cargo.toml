@@ -14,7 +14,7 @@ impl-codec = { workspace = true }
 impl-serde = { workspace = true }
 parity-util-mem = { workspace = true, features = ["primitive-types"] }
 scale-info = { workspace = true, features = ["derive", "serde"] }
-serde = { workspace = true, features = ["alloc", "derive"] }
+serde = { workspace = true, features = ["alloc", "derive"], optional = true }
 
 # Bridge Dependencies
 

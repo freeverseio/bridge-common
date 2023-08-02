@@ -12,7 +12,7 @@ hash-db = { workspace = true }
 impl-trait-for-tuples = { workspace = true }
 num-traits = { workspace = true, default-features = false }
 scale-info = { workspace = true }
-serde = { workspace = true }
+serde = { workspace = true, optional = true }
 
 # Substrate Dependencies
 
