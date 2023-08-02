@@ -260,9 +260,9 @@ frame_support::parameter_types! {
 }
 
 /// Name of the With-Evochain GRANDPA pallet instance that is deployed at bridged chains.
-pub const WITH_EVOCHAIN_GRANDPA_PALLET_NAME: &str = "BridgeEvoGrandpa";
+pub const WITH_EVOCHAIN_GRANDPA_PALLET_NAME: &str = "BridgeEvochainGrandpa";
 /// Name of the With-Evochain messages pallet instance that is deployed at bridged chains.
-pub const WITH_EVOCHAIN_MESSAGES_PALLET_NAME: &str = "BridgeEvoMessages";
+pub const WITH_EVOCHAIN_MESSAGES_PALLET_NAME: &str = "BridgeEvochainMessages";
 /// Name of the transaction payment pallet at the Evochain runtime.
 pub const TRANSACTION_PAYMENT_PALLET_NAME: &str = "TransactionPayment";
 

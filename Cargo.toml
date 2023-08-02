@@ -100,6 +100,7 @@ bp-evochain = { path = "./primitives/chain-evolution", default-features = false 
 bp-parachains = { path = "./primitives/parachains", default-features = false }
 bp-bridge-hub-cumulus = { path = "./primitives/chain-bridge-hub-cumulus", default-features = false }
 bp-ownership-parachain = { path = "./primitives/chain-ownership-parachain", default-features = false }
+
 # Local pallets
 pallet-bridge-grandpa = { path = "./pallets/grandpa", default-features = false }
 pallet-bridge-messages = { path = "./pallets/messages", default-features = false }
