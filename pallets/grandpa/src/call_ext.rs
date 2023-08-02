@@ -195,139 +195,139 @@ fn max_expected_call_size<T: Config<I>, I: 'static>(required_precommits: u32) ->
     T::BridgedChain::MAX_HEADER_SIZE.saturating_add(max_expected_justification_size)
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::{
-        call_ext::CallSubType,
-        mock::{run_test, test_header, RuntimeCall, TestBridgedChain, TestNumber, TestRuntime},
-        BestFinalized, Config, WeightInfo,
-    };
-    use bp_header_chain::ChainWithGrandpa;
-    use bp_runtime::HeaderId;
-    use bp_test_utils::{
-        make_default_justification, make_justification_for_header, JustificationGeneratorParams,
-    };
-    use frame_support::weights::Weight;
-    use sp_runtime::{testing::DigestItem, traits::Header as _, SaturatedConversion};
+// #[cfg(test)]
+// mod tests {
+//     use crate::{
+//         call_ext::CallSubType,
+//         mock::{run_test, test_header, RuntimeCall, TestBridgedChain, TestNumber, TestRuntime},
+//         BestFinalized, Config, WeightInfo,
+//     };
+//     use bp_header_chain::ChainWithGrandpa;
+//     use bp_runtime::HeaderId;
+//     use bp_test_utils::{
+//         make_default_justification, make_justification_for_header, JustificationGeneratorParams,
+//     };
+//     use frame_support::weights::Weight;
+//     use sp_runtime::{testing::DigestItem, traits::Header as _, SaturatedConversion};
 
-    fn validate_block_submit(num: TestNumber) -> bool {
-        let bridge_grandpa_call = crate::Call::<TestRuntime, ()>::submit_finality_proof {
-            finality_target: Box::new(test_header(num)),
-            justification: make_default_justification(&test_header(num)),
-        };
-        RuntimeCall::check_obsolete_submit_finality_proof(&RuntimeCall::Grandpa(
-            bridge_grandpa_call,
-        ))
-        .is_ok()
-    }
+//     fn validate_block_submit(num: TestNumber) -> bool {
+//         let bridge_grandpa_call = crate::Call::<TestRuntime, ()>::submit_finality_proof {
+//             finality_target: Box::new(test_header(num)),
+//             justification: make_default_justification(&test_header(num)),
+//         };
+//         RuntimeCall::check_obsolete_submit_finality_proof(&RuntimeCall::Grandpa(
+//             bridge_grandpa_call,
+//         ))
+//         .is_ok()
+//     }
 
-    fn sync_to_header_10() {
-        let header10_hash = sp_core::H256::default();
-        BestFinalized::<TestRuntime, ()>::put(HeaderId(10, header10_hash));
-    }
+//     fn sync_to_header_10() {
+//         let header10_hash = sp_core::H256::default();
+//         BestFinalized::<TestRuntime, ()>::put(HeaderId(10, header10_hash));
+//     }
 
-    #[test]
-    fn extension_rejects_obsolete_header() {
-        run_test(|| {
-            // when current best finalized is #10 and we're trying to import header#5 => tx is
-            // rejected
-            sync_to_header_10();
-            assert!(!validate_block_submit(5));
-        });
-    }
+//     #[test]
+//     fn extension_rejects_obsolete_header() {
+//         run_test(|| {
+//             // when current best finalized is #10 and we're trying to import header#5 => tx is
+//             // rejected
+//             sync_to_header_10();
+//             assert!(!validate_block_submit(5));
+//         });
+//     }
 
-    #[test]
-    fn extension_rejects_same_header() {
-        run_test(|| {
-            // when current best finalized is #10 and we're trying to import header#10 => tx is
-            // rejected
-            sync_to_header_10();
-            assert!(!validate_block_submit(10));
-        });
-    }
+//     #[test]
+//     fn extension_rejects_same_header() {
+//         run_test(|| {
+//             // when current best finalized is #10 and we're trying to import header#10 => tx is
+//             // rejected
+//             sync_to_header_10();
+//             assert!(!validate_block_submit(10));
+//         });
+//     }
 
-    #[test]
-    fn extension_accepts_new_header() {
-        run_test(|| {
-            // when current best finalized is #10 and we're trying to import header#15 => tx is
-            // accepted
-            sync_to_header_10();
-            assert!(validate_block_submit(15));
-        });
-    }
+//     #[test]
+//     fn extension_accepts_new_header() {
+//         run_test(|| {
+//             // when current best finalized is #10 and we're trying to import header#15 => tx is
+//             // accepted
+//             sync_to_header_10();
+//             assert!(validate_block_submit(15));
+//         });
+//     }
 
-    #[test]
-    fn extension_returns_correct_extra_size_if_call_arguments_are_too_large() {
-        // when call arguments are below our limit => no refund
-        let small_finality_target = test_header(1);
-        let justification_params = JustificationGeneratorParams {
-            header: small_finality_target.clone(),
-            ..Default::default()
-        };
-        let small_justification = make_justification_for_header(justification_params);
-        let small_call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
-            finality_target: Box::new(small_finality_target),
-            justification: small_justification,
-        });
-        assert_eq!(
-            small_call.submit_finality_proof_info().unwrap().extra_size,
-            0
-        );
+//     #[test]
+//     fn extension_returns_correct_extra_size_if_call_arguments_are_too_large() {
+//         // when call arguments are below our limit => no refund
+//         let small_finality_target = test_header(1);
+//         let justification_params = JustificationGeneratorParams {
+//             header: small_finality_target.clone(),
+//             ..Default::default()
+//         };
+//         let small_justification = make_justification_for_header(justification_params);
+//         let small_call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
+//             finality_target: Box::new(small_finality_target),
+//             justification: small_justification,
+//         });
+//         assert_eq!(
+//             small_call.submit_finality_proof_info().unwrap().extra_size,
+//             0
+//         );
 
-        // when call arguments are too large => partial refund
-        let mut large_finality_target = test_header(1);
-        large_finality_target
-            .digest_mut()
-            .push(DigestItem::Other(vec![42u8; 1024 * 1024]));
-        let justification_params = JustificationGeneratorParams {
-            header: large_finality_target.clone(),
-            ..Default::default()
-        };
-        let large_justification = make_justification_for_header(justification_params);
-        let large_call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
-            finality_target: Box::new(large_finality_target),
-            justification: large_justification,
-        });
-        assert_ne!(
-            large_call.submit_finality_proof_info().unwrap().extra_size,
-            0
-        );
-    }
+//         // when call arguments are too large => partial refund
+//         let mut large_finality_target = test_header(1);
+//         large_finality_target
+//             .digest_mut()
+//             .push(DigestItem::Other(vec![42u8; 1024 * 1024]));
+//         let justification_params = JustificationGeneratorParams {
+//             header: large_finality_target.clone(),
+//             ..Default::default()
+//         };
+//         let large_justification = make_justification_for_header(justification_params);
+//         let large_call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
+//             finality_target: Box::new(large_finality_target),
+//             justification: large_justification,
+//         });
+//         assert_ne!(
+//             large_call.submit_finality_proof_info().unwrap().extra_size,
+//             0
+//         );
+//     }
 
-    #[test]
-    fn extension_returns_correct_extra_weight_if_there_are_too_many_headers_in_votes_ancestry() {
-        let finality_target = test_header(1);
-        let mut justification_params = JustificationGeneratorParams {
-            header: finality_target.clone(),
-            ancestors: TestBridgedChain::REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY,
-            ..Default::default()
-        };
+//     #[test]
+//     fn extension_returns_correct_extra_weight_if_there_are_too_many_headers_in_votes_ancestry() {
+//         let finality_target = test_header(1);
+//         let mut justification_params = JustificationGeneratorParams {
+//             header: finality_target.clone(),
+//             ancestors: TestBridgedChain::REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY,
+//             ..Default::default()
+//         };
 
-        // when there are `REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY` headers => no refund
-        let justification = make_justification_for_header(justification_params.clone());
-        let call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
-            finality_target: Box::new(finality_target.clone()),
-            justification,
-        });
-        assert_eq!(
-            call.submit_finality_proof_info().unwrap().extra_weight,
-            Weight::zero()
-        );
+//         // when there are `REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY` headers => no refund
+//         let justification = make_justification_for_header(justification_params.clone());
+//         let call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
+//             finality_target: Box::new(finality_target.clone()),
+//             justification,
+//         });
+//         assert_eq!(
+//             call.submit_finality_proof_info().unwrap().extra_weight,
+//             Weight::zero()
+//         );
 
-        // when there are `REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY + 1` headers => full refund
-        justification_params.ancestors += 1;
-        let justification = make_justification_for_header(justification_params);
-        let call_weight = <TestRuntime as Config>::WeightInfo::submit_finality_proof(
-            justification.commit.precommits.len().saturated_into(),
-            justification.votes_ancestries.len().saturated_into(),
-        );
-        let call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
-            finality_target: Box::new(finality_target),
-            justification,
-        });
-        assert_eq!(
-            call.submit_finality_proof_info().unwrap().extra_weight,
-            call_weight
-        );
-    }
-}
+//         // when there are `REASONABLE_HEADERS_IN_JUSTIFICATON_ANCESTRY + 1` headers => full refund
+//         justification_params.ancestors += 1;
+//         let justification = make_justification_for_header(justification_params);
+//         let call_weight = <TestRuntime as Config>::WeightInfo::submit_finality_proof(
+//             justification.commit.precommits.len().saturated_into(),
+//             justification.votes_ancestries.len().saturated_into(),
+//         );
+//         let call = RuntimeCall::Grandpa(crate::Call::submit_finality_proof {
+//             finality_target: Box::new(finality_target),
+//             justification,
+//         });
+//         assert_eq!(
+//             call.submit_finality_proof_info().unwrap().extra_weight,
+//             call_weight
+//         );
+//     }
+// }

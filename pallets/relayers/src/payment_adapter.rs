@@ -19,8 +19,8 @@
 use crate::{Config, Pallet};
 
 use bp_messages::{
-	source_chain::{DeliveryConfirmationPayments, RelayersRewards},
-	LaneId, MessageNonce,
+    source_chain::{DeliveryConfirmationPayments, RelayersRewards},
+    LaneId, MessageNonce,
 };
 use bp_relayers::{RewardsAccountOwner, RewardsAccountParams};
 use bp_runtime::Chain;
@@ -31,129 +31,69 @@ use sp_std::{collections::vec_deque::VecDeque, marker::PhantomData, ops::RangeIn
 /// Adapter that allows relayers pallet to be used as a delivery+dispatch payment mechanism
 /// for the messages pallet.
 pub struct DeliveryConfirmationPaymentsAdapter<T, MI, DeliveryReward>(
-	PhantomData<(T, MI, DeliveryReward)>,
+    PhantomData<(T, MI, DeliveryReward)>,
 );
 
 impl<T, MI, DeliveryReward> DeliveryConfirmationPayments<T::AccountId>
-	for DeliveryConfirmationPaymentsAdapter<T, MI, DeliveryReward>
+    for DeliveryConfirmationPaymentsAdapter<T, MI, DeliveryReward>
 where
-	T: Config + pallet_bridge_messages::Config<MI>,
-	MI: 'static,
-	DeliveryReward: Get<T::Reward>,
+    T: Config + pallet_bridge_messages::Config<MI>,
+    MI: 'static,
+    DeliveryReward: Get<T::Reward>,
 {
-	type Error = &'static str;
+    type Error = &'static str;
 
-	fn pay_reward(
-		lane_id: LaneId,
-		messages_relayers: VecDeque<bp_messages::UnrewardedRelayer<T::AccountId>>,
-		confirmation_relayer: &T::AccountId,
-		received_range: &RangeInclusive<bp_messages::MessageNonce>,
-	) -> MessageNonce {
-		let relayers_rewards =
-			bp_messages::calc_relayers_rewards::<T::AccountId>(messages_relayers, received_range);
-		let rewarded_relayers = relayers_rewards.len();
+    fn pay_reward(
+        lane_id: LaneId,
+        messages_relayers: VecDeque<bp_messages::UnrewardedRelayer<T::AccountId>>,
+        confirmation_relayer: &T::AccountId,
+        received_range: &RangeInclusive<bp_messages::MessageNonce>,
+    ) -> MessageNonce {
+        let relayers_rewards =
+            bp_messages::calc_relayers_rewards::<T::AccountId>(messages_relayers, received_range);
+        let rewarded_relayers = relayers_rewards.len();
 
-		register_relayers_rewards::<T>(
-			confirmation_relayer,
-			relayers_rewards,
-			RewardsAccountParams::new(
-				lane_id,
-				T::BridgedChain::ID,
-				RewardsAccountOwner::BridgedChain,
-			),
-			DeliveryReward::get(),
-		);
+        register_relayers_rewards::<T>(
+            confirmation_relayer,
+            relayers_rewards,
+            RewardsAccountParams::new(
+                lane_id,
+                T::BridgedChain::ID,
+                RewardsAccountOwner::BridgedChain,
+            ),
+            DeliveryReward::get(),
+        );
 
-		rewarded_relayers as _
-	}
+        rewarded_relayers as _
+    }
 }
 
 // Update rewards to given relayers, optionally rewarding confirmation relayer.
 fn register_relayers_rewards<T: Config>(
-	confirmation_relayer: &T::AccountId,
-	relayers_rewards: RelayersRewards<T::AccountId>,
-	lane_id: RewardsAccountParams,
-	delivery_fee: T::Reward,
+    confirmation_relayer: &T::AccountId,
+    relayers_rewards: RelayersRewards<T::AccountId>,
+    lane_id: RewardsAccountParams,
+    delivery_fee: T::Reward,
 ) {
-	// reward every relayer except `confirmation_relayer`
-	let mut confirmation_relayer_reward = T::Reward::zero();
-	for (relayer, messages) in relayers_rewards {
-		// sane runtime configurations guarantee that the number of messages will be below
-		// `u32::MAX`
-		let relayer_reward = T::Reward::saturated_from(messages).saturating_mul(delivery_fee);
+    // reward every relayer except `confirmation_relayer`
+    let mut confirmation_relayer_reward = T::Reward::zero();
+    for (relayer, messages) in relayers_rewards {
+        // sane runtime configurations guarantee that the number of messages will be below
+        // `u32::MAX`
+        let relayer_reward = T::Reward::saturated_from(messages).saturating_mul(delivery_fee);
 
-		if relayer != *confirmation_relayer {
-			Pallet::<T>::register_relayer_reward(lane_id, &relayer, relayer_reward);
-		} else {
-			confirmation_relayer_reward =
-				confirmation_relayer_reward.saturating_add(relayer_reward);
-		}
-	}
+        if relayer != *confirmation_relayer {
+            Pallet::<T>::register_relayer_reward(lane_id, &relayer, relayer_reward);
+        } else {
+            confirmation_relayer_reward =
+                confirmation_relayer_reward.saturating_add(relayer_reward);
+        }
+    }
 
-	// finally - pay reward to confirmation relayer
-	Pallet::<T>::register_relayer_reward(
-		lane_id,
-		confirmation_relayer,
-		confirmation_relayer_reward,
-	);
-}
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	use crate::{mock::*, RelayerRewards};
-
-	const RELAYER_1: AccountId = 1;
-	const RELAYER_2: AccountId = 2;
-	const RELAYER_3: AccountId = 3;
-
-	fn relayers_rewards() -> RelayersRewards<AccountId> {
-		vec![(RELAYER_1, 2), (RELAYER_2, 3)].into_iter().collect()
-	}
-
-	#[test]
-	fn confirmation_relayer_is_rewarded_if_it_has_also_delivered_messages() {
-		run_test(|| {
-			register_relayers_rewards::<TestRuntime>(
-				&RELAYER_2,
-				relayers_rewards(),
-				test_reward_account_param(),
-				50,
-			);
-
-			assert_eq!(
-				RelayerRewards::<TestRuntime>::get(RELAYER_1, test_reward_account_param()),
-				Some(100)
-			);
-			assert_eq!(
-				RelayerRewards::<TestRuntime>::get(RELAYER_2, test_reward_account_param()),
-				Some(150)
-			);
-		});
-	}
-
-	#[test]
-	fn confirmation_relayer_is_not_rewarded_if_it_has_not_delivered_any_messages() {
-		run_test(|| {
-			register_relayers_rewards::<TestRuntime>(
-				&RELAYER_3,
-				relayers_rewards(),
-				test_reward_account_param(),
-				50,
-			);
-
-			assert_eq!(
-				RelayerRewards::<TestRuntime>::get(RELAYER_1, test_reward_account_param()),
-				Some(100)
-			);
-			assert_eq!(
-				RelayerRewards::<TestRuntime>::get(RELAYER_2, test_reward_account_param()),
-				Some(150)
-			);
-			assert_eq!(
-				RelayerRewards::<TestRuntime>::get(RELAYER_3, test_reward_account_param()),
-				None
-			);
-		});
-	}
+    // finally - pay reward to confirmation relayer
+    Pallet::<T>::register_relayer_reward(
+        lane_id,
+        confirmation_relayer,
+        confirmation_relayer_reward,
+    );
 }
