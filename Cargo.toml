@@ -70,7 +70,7 @@ pallet-utility = { git = "https://github.com/paritytech/substrate", "branch" = "
 pallet-beefy-mmr = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-mmr = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-consensus-beefy = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
-sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
+sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
 sp-core = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
 sp-runtime = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
 sp-std = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
