@@ -13,15 +13,15 @@ name = "Freeverse"
 
 [workspace.dependencies]
 # wasm 
-parity-scale-codec = { version = "3.1.5", default-features = false }
+parity-scale-codec = { version = "3.2.2", default-features = false, features = ["derive"] }
 fixed-hash = { version = "0.8.0", default-features = false }
 hash256-std-hasher = { version = "0.15.2", default-features = false }
 impl-codec = { version = "0.6", default-features = false }
 impl-serde = { version = "0.4.0", default-features = false }
 hash-db = { version = "0.16.0", default-features = false }
-impl-trait-for-tuples = "0.2.2"
-scale-info = { version = "2.9.0", default-features = false, features = ["derive", "serde"] }
-serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
+impl-trait-for-tuples = "0.2.1"
+scale-info = { version = "2.7.0", default-features = false, features = ["derive"] }
+serde = { version = "1.0.163", default-features = false, features = ["alloc", "derive"] }
 static_assertions = { version = "1.1" }
 
 # std
@@ -30,7 +30,7 @@ async-trait = "0.1.72"
 backoff = "0.4"
 futures = "0.3.28"
 hex = "0.4"
-log = "0.4.19"
+log = "0.4.17"
 parking_lot = "0.12.1"
 ansi_term = "0.12"
 anyhow = "1.0"
@@ -62,26 +62,26 @@ pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/parityt
 # (wasm)
 finality-grandpa = { version = "0.16.2", default-features = false }
 binary-merkle-tree = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
-frame-support = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
-frame-system = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
+frame-support = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
+frame-system = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-balances = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-utility = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-beefy-mmr = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 pallet-mmr = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-consensus-beefy = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
-sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
-sp-core = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
-sp-runtime = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
+sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
+sp-core = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
+sp-runtime = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-std = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-trie = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-api = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-io = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 sp-state-machine = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
-sp-arithmetic = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false, features = ["serde"] }
+sp-arithmetic = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43", default-features = false }
 
 # Polkadot
-xcm = { git = "https://github.com/paritytech/polkadot", "branch" = "release-v0.9.43", default-features = false, features = ["serde"] }
+xcm = { git = "https://github.com/paritytech/polkadot", "branch" = "release-v0.9.43", default-features = false }
 xcm-builder = { git = "https://github.com/paritytech/polkadot", "branch" = "release-v0.9.43", default-features = false }
 polkadot-primitives = { git = "https://github.com/paritytech/polkadot", "branch" = "release-v0.9.43", default-features = false }
 
