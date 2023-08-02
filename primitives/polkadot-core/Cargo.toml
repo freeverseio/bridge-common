@@ -10,7 +10,7 @@ license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 parity-scale-codec = { workspace = true }
 parity-util-mem = { workspace = true, optional = true }
 scale-info = { workspace = true }
-serde = { workspace = true }
+serde = { workspace = true, optional = true }
 
 # Bridge Dependencies
 
