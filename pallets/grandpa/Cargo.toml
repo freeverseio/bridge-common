@@ -19,12 +19,12 @@ bp-header-chain = { workspace = true }
 
 # Substrate Dependencies
 
-frame-support = { workspace = true, default-features = false }
-frame-system = { workspace = true, default-features = false }
-sp-consensus-grandpa = { workspace = true, default-features = false, features = ["serde"] }
-sp-runtime = { workspace = true, default-features = false, features = ["serde"] }
-sp-std = { workspace = true, default-features = false }
-sp-trie = { workspace = true, default-features = false }
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+sp-consensus-grandpa = { workspace = true, features = ["serde"] }
+sp-runtime = { workspace = true, features = ["serde"] }
+sp-std = { workspace = true }
+sp-trie = { workspace = true }
 
 # Optional Benchmarking Dependencies
 frame-benchmarking = { workspace = true, optional = true }

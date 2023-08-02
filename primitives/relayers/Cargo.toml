@@ -17,9 +17,9 @@ bp-runtime = { workspace = true }
 
 # Substrate Dependencies
 
-frame-support = { workspace = true, default-features = false }
-sp-runtime = { workspace = true, default-features = false }
-sp-std = { workspace = true, default-features = false }
+frame-support = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
 
 [features]
 default = ["std"]

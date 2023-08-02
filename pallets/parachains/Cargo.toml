@@ -42,7 +42,7 @@ std = [
 	"parity-scale-codec/std",
 	"frame-support/std",
 	"frame-system/std",
-	"frame-benchmarking/std",
+	"frame-benchmarking",
 	"log/std",
 	"pallet-bridge-grandpa/std",
 	"scale-info/std",
