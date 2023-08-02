@@ -29,6 +29,7 @@ default = ["std"]
 std = [
 	"bp-bridge-hub-cumulus/std",
 	"bp-messages/std",
+	"bp-polkadot-core/std",
 	"bp-runtime/std",
 	"frame-support/std",
 	"frame-system/std",

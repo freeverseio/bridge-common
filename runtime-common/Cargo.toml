@@ -84,6 +84,10 @@ runtime-benchmarks = [
 	"pallet-bridge-parachains/runtime-benchmarks",
 	"pallet-bridge-relayers/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"pallet-utility/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
 ]
 integrity-test = [
 	"static_assertions",
