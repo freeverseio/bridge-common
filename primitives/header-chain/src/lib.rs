@@ -28,8 +28,6 @@ use core::{clone::Clone, cmp::Eq, default::Default, fmt::Debug};
 use frame_support::PalletError;
 use parity_scale_codec::{Codec, Decode, Encode, EncodeLike, MaxEncodedLen};
 use scale_info::TypeInfo;
-#[cfg(feature = "std")]
-
 use serde::{Deserialize, Serialize};
 use sp_consensus_grandpa::{AuthorityList, ConsensusLog, SetId, GRANDPA_ENGINE_ID};
 use sp_runtime::{traits::Header as HeaderT, Digest, RuntimeDebug};
