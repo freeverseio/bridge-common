@@ -9,7 +9,7 @@ license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 [dependencies]
 parity-scale-codec = { workspace = true, features = ["derive", "bit-vec"] }
 scale-info = { workspace = true, features = ["bit-vec", "derive", "serde"] }
-serde = { workspace = true, optional = true }
+serde = { workspace = true, features = ["alloc", "derive"] }
 
 # Bridge Dependencies
 
