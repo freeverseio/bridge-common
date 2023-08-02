@@ -14,6 +14,10 @@ name = "Freeverse"
 [workspace.dependencies]
 # wasm 
 parity-scale-codec = { version = "3.1.5", default-features = false }
+fixed-hash = { version = "0.8.0", default-features = false }
+hash256-std-hasher = { version = "0.15.2", default-features = false }
+impl-codec = { version = "0.6", default-features = false }
+impl-serde = { version = "0.4.0", default-features = false }
 hash-db = { version = "0.16.0", default-features = false }
 impl-trait-for-tuples = "0.2.2"
 scale-info = { version = "2.9.0", default-features = false, features = ["derive", "serde"] }
@@ -47,15 +51,19 @@ trie-db = { version = "0.27.1", default-features = false }
 # Substrate
 # (native)
 finality-grandpa = { version = "0.16.2", default-features = false }
+binary-merkle-tree = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 frame-support = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 frame-system = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 pallet-balances = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 pallet-utility = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
+pallet-beefy-mmr = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
+pallet-mmr = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sc-chain-spec = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sc-rpc-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sc-transaction-pool-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
+sp-consensus-beefy = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-consensus-grandpa = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
@@ -66,6 +74,7 @@ sp-version = { git = "https://github.com/paritytech/substrate", branch = "polkad
 
 # Substrate 
 # (wasm)
+sp-api = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-io = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-state-machine = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
 sp-arithmetic = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43", default-features = false }
@@ -82,6 +91,8 @@ bp-header-chain = { path = "./primitives/header-chain", default-features = false
 bp-messages = { path = "./primitives/messages", default-features = false }
 bp-polkadot-core = { path = "./primitives/polkadot-core", default-features = false }
 bp-relayers = { path = "./primitives/relayers", default-features = false }
+bp-beefy = { path = "./primitives/beefy", default-features = false }
+bp-evochain = { path = "./primitives/chain-evolution", default-features = false }
 
 # Local pallets
 pallet-bridge-grandpa = { path = "./pallets/grandpa", default-features = false }
@@ -93,3 +104,6 @@ parachains-relay = { path = "./relays/parachains", default-features = false }
 finality-relay = { path = "./relays/finality", default-features = false }
 relay-substrate-client = { path = "./relays/client-substrate", default-features = false }
 relay-utils = { path = "./relays/utils", default-features = false }
+
+# evochain
+ethereum-account = { git = "https://github.com/freeverseio/laos-evolution-node.git", branch = "dev", default-features = false }

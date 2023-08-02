@@ -1,0 +1,42 @@
+[package]
+name = "bp-beefy"
+description = "Primitives of pallet-bridge-beefy module."
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2021"
+license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
+
+[dependencies]
+parity-scale-codec = { workspace = true, features = ["derive", "bit-vec"] }
+scale-info = { workspace = true, features = ["bit-vec", "derive", "serde"] }
+serde = { workspace = true, features = ["alloc", "derive"] }
+
+# Bridge Dependencies
+
+bp-runtime = { workspace = true }
+
+# Substrate Dependencies
+
+binary-merkle-tree = { workspace = true }
+sp-consensus-beefy = { workspace = true }
+frame-support = { workspace = true }
+pallet-beefy-mmr = { workspace = true }
+pallet-mmr = { workspace = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"bp-runtime/std",
+	"parity-scale-codec/std",
+	"frame-support/std",
+	"pallet-beefy-mmr/std",
+	"pallet-mmr/std",
+	"scale-info/std",
+	"serde/std",
+	"sp-consensus-beefy/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"binary-merkle-tree/std",
+]
