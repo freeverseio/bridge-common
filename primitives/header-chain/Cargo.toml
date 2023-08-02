@@ -18,10 +18,10 @@ bp-runtime = { workspace = true }
 
 # Substrate Dependencies
 
-frame-support = { workspace = true }
-sp-core = { workspace = true }
-sp-consensus-grandpa = { workspace = true }
-sp-runtime = { workspace = true }
+frame-support = { workspace = true, features = ["serde"] }
+sp-core = { workspace = true, features = ["serde"] }
+sp-consensus-grandpa = { workspace = true, features = ["serde"] }
+sp-runtime = { workspace = true, features = ["serde"] }
 sp-std = { workspace = true }
 
 [features]

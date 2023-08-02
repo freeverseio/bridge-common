@@ -21,8 +21,8 @@ bp-header-chain = { workspace = true }
 
 frame-support = { workspace = true }
 frame-system = { workspace = true }
-sp-consensus-grandpa = { workspace = true }
-sp-runtime = { workspace = true }
+sp-consensus-grandpa = { workspace = true, features = ["serde"] }
+sp-runtime = { workspace = true, features = ["serde"] }
 sp-std = { workspace = true }
 sp-trie = { workspace = true }
 
