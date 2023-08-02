@@ -29,5 +29,5 @@ bp-runtime = { workspace = true }
 
 # Substrate dependencies
 
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43" }
-substrate-prometheus-endpoint = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.43" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43" }
+substrate-prometheus-endpoint = { git = "https://github.com/paritytech/substrate", "branch" = "polkadot-v0.9.43" }
