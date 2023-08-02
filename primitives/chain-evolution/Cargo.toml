@@ -52,7 +52,7 @@ std = [
 	"impl-serde/std",
 	"parity-util-mem/std",
 	"scale-info/std",
-	"serde/std",
+	"serde",
 	"sp-api/std",
 	"sp-core/std",
 	"sp-io/std",

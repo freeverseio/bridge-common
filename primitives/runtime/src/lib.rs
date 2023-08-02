@@ -26,6 +26,7 @@ use frame_support::{
 use frame_system::RawOrigin;
 use parity_scale_codec::{Decode, Encode, FullCodec, MaxEncodedLen};
 use scale_info::TypeInfo;
+#[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_core::storage::StorageKey;
 use sp_runtime::traits::{BadOrigin, Header as HeaderT, UniqueSaturatedInto};

@@ -29,6 +29,8 @@ use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 // Weight is reexported to avoid additional frame-support dependencies in related crates.
 pub use frame_support::weights::Weight;
 use scale_info::TypeInfo;
+#[cfg(feature = "std")]
+
 use serde::{Deserialize, Serialize};
 use source_chain::RelayersRewards;
 use sp_core::{TypeId, H256};

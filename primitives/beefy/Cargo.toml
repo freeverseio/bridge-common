@@ -34,7 +34,7 @@ std = [
 	"pallet-beefy-mmr/std",
 	"pallet-mmr/std",
 	"scale-info/std",
-	"serde/std",
+	"serde",
 	"sp-consensus-beefy/std",
 	"sp-runtime/std",
 	"sp-std/std",

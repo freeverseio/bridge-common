@@ -42,7 +42,7 @@ use sp_runtime::{
 };
 use sp_std::prelude::*;
 use sp_trie::{LayoutV0, LayoutV1, TrieConfiguration};
-
+#[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_runtime::traits::Keccak256;
 

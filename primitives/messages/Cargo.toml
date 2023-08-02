@@ -31,7 +31,7 @@ std = [
 	"parity-scale-codec/std",
 	"frame-support/std",
 	"scale-info/std",
-	"serde/std",
+	"serde",
 	"sp-core/std",
 	"sp-io/std",
 	"sp-std/std"

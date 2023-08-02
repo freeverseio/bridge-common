@@ -37,6 +37,7 @@ use bp_runtime::{BasicOperatingMode, BlockNumberOf, Chain, HashOf};
 use frame_support::Parameter;
 use parity_scale_codec::{Decode, Encode};
 use scale_info::TypeInfo;
+#[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 use sp_runtime::{
     traits::{Convert, MaybeSerializeDeserialize},
