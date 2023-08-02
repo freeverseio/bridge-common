@@ -9,7 +9,7 @@ license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 [dependencies]
 parity-scale-codec = { workspace = true }
 scale-info = { workspace = true, features = ["bit-vec", "derive", "serde"] }
-serde = { workspace = true, features = ["alloc", "derive"], optional = true }
+serde = { workspace = true, features = ["alloc", "derive"] }
 
 # Bridge dependencies
 
@@ -31,7 +31,7 @@ std = [
 	"parity-scale-codec/std",
 	"frame-support/std",
 	"scale-info/std",
-	"serde",
+	"serde/std",
 	"sp-core/std",
 	"sp-io/std",
 	"sp-std/std"

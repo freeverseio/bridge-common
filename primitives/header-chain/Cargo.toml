@@ -10,7 +10,7 @@ license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 parity-scale-codec = { workspace = true }
 finality-grandpa = { workspace = true }
 scale-info = { workspace = true }
-serde = { workspace = true, optional = true }
+serde = { workspace = true }
 
 # Bridge dependencies
 
@@ -32,7 +32,7 @@ std = [
 	"finality-grandpa/std",
 	"frame-support/std",
 	"scale-info/std",
-	"serde",
+	"serde/std",
 	"sp-core/std",
 	"sp-consensus-grandpa/std",
 	"sp-runtime/std",
